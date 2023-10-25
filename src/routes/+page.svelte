@@ -83,11 +83,11 @@
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="stock-item" on:click={() => openPopup(stock)}>
         <div>
-          <span>{stock.name}</span>
-          <span>{stock.description}</span>
+          <span class="stock-name">{stock.name}</span>
+          <span class="stock-desc">{stock.description}</span>
         </div>
         <div>
-          <span>{stock.currentPrice.toFixed(2)} USD</span>
+          <span class="stock-price">{stock.currentPrice.toFixed(2)} USD</span>
           {#if stock.priceChange > 0}
             <span class="price up">+{stock.priceChange.toFixed(2)}</span>
           {:else if stock.priceChange < 0}
@@ -151,11 +151,11 @@
       align-items: center;
     }
 
-    & > .stock-item > div > span:nth-child(1) {
+    & .stock-name, & .stock-price {
       font-size: 18px;
     }
 
-    & > .stock-item > div > span:nth-child(2) {
+    & .stock-desc {
       font-size: 14px;
       color: #464646;
     }
