@@ -87,14 +87,18 @@
           <span class="stock-desc">{stock.description}</span>
         </div>
         <div>
-          <span class="stock-price">{stock.currentPrice.toFixed(2)} USD</span>
-          {#if stock.priceChange > 0}
-            <span class="price up">+{stock.priceChange.toFixed(2)}</span>
-          {:else if stock.priceChange < 0}
-            <span class="price down">{stock.priceChange.toFixed(2)}</span>
-          {:else}
-            <span class="price">{stock.priceChange.toFixed(2)}</span>
-          {/if}
+          <div class="stock-price-wrapper">
+            <span class="stock-price">{stock.currentPrice.toFixed(2)} USD</span>
+          </div>
+          <div class="stock-price-change-wrapper">
+            {#if stock.priceChange > 0}
+              <span class="price up">+{stock.priceChange.toFixed(2)}</span>
+            {:else if stock.priceChange < 0}
+              <span class="price down">{stock.priceChange.toFixed(2)}</span>
+            {:else}
+              <span class="price">{stock.priceChange.toFixed(2)}</span>
+            {/if}
+          </div>
         </div>
       </div>
     {/each}
@@ -125,7 +129,7 @@
     display: grid; /* 그리드로 설정 */
     grid-template-columns: repeat(
       auto-fill,
-      minmax(300px, 1fr)
+      minmax(350px, 1fr)
     ); /* 자동으로 나누기 */
     grid-gap: 10px; /* 셀 사이의 간격 설정 */
 
@@ -151,7 +155,18 @@
       align-items: center;
     }
 
-    & .stock-name, & .stock-price {
+    & .stock-price-wrapper{
+      width: 125px;
+      text-align: right;
+    }
+
+    & .stock-price-change-wrapper{
+      width: 75px;
+      text-align: right;
+    }
+
+    & .stock-name,
+    & .stock-price {
       font-size: 18px;
     }
 
