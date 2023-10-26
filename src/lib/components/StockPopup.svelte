@@ -1,15 +1,8 @@
-<!-- StockPopup.svelte -->
 <script lang="ts">
+  import type { Stock } from "$lib/interfaces";
+
   export let showPopup = false;
   export let stock: Stock | null = null;
-
-  // 주식 항목 타입 정의
-  interface Stock {
-    name: string;
-    description: string;
-    currentPrice: number;
-    priceChange: number;
-  }
 
   function closePopup() {
     showPopup = false;

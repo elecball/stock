@@ -2,55 +2,32 @@
 <script lang="ts">
   import { auth, provider, user } from "$lib/auth";
   import { signInWithPopup, signOut } from "firebase/auth";
-  import StockPopup from "../components/StockPopup.svelte";
-
-  // 주식 항목 타입 정의
-  interface Stock {
-    name: string;
-    description: string;
-    currentPrice: number;
-    priceChange: number;
-  }
-
-  interface Balance {
-    cash: number;
-    portfolioValue: number;
-  }
+  import StockPopup from "$lib/components/StockPopup.svelte";
+  import type { Stock } from "$lib/interfaces";
 
   let stockList: Stock[] = [
     {
-      name: "애플",
-      description: "기술 회사",
-      currentPrice: 150.25,
-      priceChange: -2.5,
+      name: "Google",
+      description: "Alphabet Inc.'s technology company",
+      currentPrice: 2800.00,
+      priceList: [2750.50, 2780.25, 2795.75, 2810.00, 2825.50]
     },
     {
-      name: "구글",
-      description: "검색 엔진 회사",
-      currentPrice: 280.5,
-      priceChange: 3.25,
+      name: "Apple",
+      description: "Apple Inc.",
+      currentPrice: 150.50,
+      priceList: [148.75, 149.25, 150.00, 151.00, 152.00]
     },
     {
-      name: "마이크로소프트",
-      description: "소프트웨어 회사",
-      currentPrice: 300.75,
-      priceChange: 1.2,
+      name: "Amazon",
+      description: "Amazon.com, Inc.",
+      currentPrice: 3500.75,
+      priceList: [3480.50, 3490.25, 3505.00, 3510.50, 3520.25]
     },
-    {
-      name: "코카콜라",
-      description: "식품 회사",
-      currentPrice: 55.85,
-      priceChange: 0.24,
-    },
-    // 추가 주식 항목
-    // priceChange 백분율로 간주합니다
   ];
 
-  let balance: Balance = {
-    cash: 5000, // 현금 잔고
-    portfolioValue: 0, // 포트폴리오 가치
-  };
-
+  
+  let balance = 5000;
   let showPopup = false;
   let selectedStock: Stock | null = null;
 
@@ -73,8 +50,7 @@
 <main>
   <h1>주식 시장</h1>
   {#if $user}
-    <p>내 잔고: ${balance.cash.toFixed(2)}</p>
-    <p>포트폴리오 가치: ${balance.portfolioValue.toFixed(2)}</p>
+    <p>내 잔고: ${balance.toFixed(2)}</p>
     <p>로그인된 사용자: {$user?.displayName}</p>
   {/if}
   <div class="stock-tile">
@@ -91,12 +67,12 @@
             <span class="stock-price">{stock.currentPrice.toFixed(2)} USD</span>
           </div>
           <div class="stock-price-change-wrapper">
-            {#if stock.priceChange > 0}
-              <span class="price up">+{stock.priceChange.toFixed(2)}</span>
-            {:else if stock.priceChange < 0}
-              <span class="price down">{stock.priceChange.toFixed(2)}</span>
+            {#if stock.currentPrice > stock.priceList[0]}
+              <span class="price up">+{(stock.currentPrice / stock.priceList[0]).toFixed(2)}</span>
+            {:else if stock.currentPrice < stock.priceList[0]}
+              <span class="price down">{(stock.currentPrice / stock.priceList[0]).toFixed(2)}</span>
             {:else}
-              <span class="price">{stock.priceChange.toFixed(2)}</span>
+              <span class="price">{(stock.currentPrice / stock.priceList[0]).toFixed(2)}</span>
             {/if}
           </div>
         </div>
