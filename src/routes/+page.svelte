@@ -1,7 +1,5 @@
 <!-- main.svelte -->
 <script lang="ts">
-  import { auth, provider, user } from "$lib/auth";
-  import { signInWithPopup, signOut } from "firebase/auth";
   import StockPopup from "$lib/components/StockPopup.svelte";
   import type { Stock } from "$lib/interfaces";
 
@@ -27,7 +25,6 @@
   ];
 
   
-  let balance = 5000;
   let showPopup = false;
   let selectedStock: Stock | null = null;
 
@@ -35,24 +32,9 @@
     selectedStock = stock;
     showPopup = true;
   }
-
-  async function login() {
-    signInWithPopup(auth, provider).then((cre) => {
-      console.log(cre.user);
-    });
-  }
-
-  async function logout() {
-    await signOut(auth);
-  }
 </script>
 
 <main>
-  <h1>주식 시장</h1>
-  {#if $user}
-    <p>내 잔고: ${balance.toFixed(2)}</p>
-    <p>로그인된 사용자: {$user?.displayName}</p>
-  {/if}
   <div class="stock-tile">
     {#each stockList as stock, i (stock.name)}
       <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -80,43 +62,32 @@
     {/each}
   </div>
 
-  {#if $user}
-    <button on:click={logout}>로그아웃</button>
-  {:else}
-    <button on:click={login}>로그인</button>
-  {/if}
-
   <StockPopup bind:showPopup bind:stock={selectedStock} />
 </main>
 
 <style>
-  :root {
-    font-family: "Pretendard Variable", Pretendard, -apple-system,
-      BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
-      "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  }
-
   main {
     text-align: center;
+    padding: 15px 5px 0px 5px;
   }
 
   .stock-tile {
-    display: grid; /* 그리드로 설정 */
+    display: grid;
     grid-template-columns: repeat(
       auto-fill,
-      minmax(350px, 1fr)
-    ); /* 자동으로 나누기 */
-    grid-gap: 10px; /* 셀 사이의 간격 설정 */
+      minmax(400px, 1fr)
+    );
+    grid-gap: 10px;
 
     & > .stock-item {
       display: flex;
-      border: 1px solid #ccc;
+      border: 1px solid var(--transparent10);
       padding: 10px;
       border-radius: 5px;
       cursor: pointer;
       align-items: center;
       justify-content: space-between;
+      background-color: var(--transparent05);
     }
 
     & > .stock-item > div:nth-child(1) {
@@ -148,7 +119,7 @@
 
     & .stock-desc {
       font-size: 14px;
-      color: #464646;
+      color: var(--desc);
     }
   }
 

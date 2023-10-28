@@ -2,7 +2,7 @@
 import { browser } from "$app/environment";
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, onAuthStateChanged, type User } from "firebase/auth"
-import { readable } from "svelte/store";
+import { readable, writable } from "svelte/store";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCI5nGZKWtm5-PONy3-WHAPOmGC3mySG0A",
@@ -19,9 +19,13 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-const user = readable<User | null>(null, set => onAuthStateChanged(auth, u => {
-  if (!browser) return;
-  set(u);
-}))
+const user = writable<User | null>(null);
+const isLoading = writable<boolean>(true);
 
-export { app, auth, provider, user };
+onAuthStateChanged(auth, u => {
+  if (!browser) return;
+  isLoading.set(false);
+  user.set(u);
+});
+
+export { app, auth, provider, user, isLoading };
