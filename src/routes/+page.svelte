@@ -31,17 +31,6 @@
     selectedStock = stock;
     showPopup = true;
   }
-<<<<<<< HEAD
-
-  async function login() {
-    await signInWithPopup(auth, provider).then((cre) => {
-      console.log(cre.user);
-    });
-  }
-
-  async function logout() {
-    await signOut(auth);
-  }
 
   onMount(() => {
     const websocket = new WebSocket('wss://stock.elecball.workers.dev');
@@ -55,8 +44,6 @@
     }
 
   });
-=======
->>>>>>> f22fda9d1b38bc5dd938b9b5981c78d51df00d86
 </script>
 
 <main>
