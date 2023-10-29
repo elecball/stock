@@ -22,6 +22,8 @@
       {#if $isLoading}
         <span>로딩 중</span>
       {:else if $user}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
         <img src="{$user?.photoURL}" alt="profile" on:click={logout}>
         <div class="info">
           <span>{$user?.displayName}</span>

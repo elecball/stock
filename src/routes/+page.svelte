@@ -34,21 +34,10 @@
     showPopup = true;
   }
 
-  async function login() {
-    await signInWithPopup(auth, provider).then((cre) => {
-      console.log(cre.user);
-    });
-  }
-
-  async function logout() {
-    await signOut(auth);
-  }
-
   onMount(() => {
     const websocket = new WebSocket('wss://stock.elecball.workers.dev');
     websocket.addEventListener('message', event => {
-      console.log('Message received from server');
-      console.log(event.data);
+      console.log(`socket message: ${event.data}`);
     });
 
     websocket.onopen = () => {
