@@ -1,9 +1,9 @@
-<!-- main.svelte -->
 <script lang="ts">
   import { auth, provider, user } from "$lib/auth";
   import { signInWithPopup, signOut } from "firebase/auth";
   import StockPopup from "$lib/components/StockPopup.svelte";
   import type { Stock } from "$lib/interfaces";
+  import { onDestroy, onMount } from "svelte";
 
   let stockList: Stock[] = [
     {
@@ -25,7 +25,6 @@
       priceList: [3480.50, 3490.25, 3505.00, 3510.50, 3520.25]
     },
   ];
-
   
   let balance = 5000;
   let showPopup = false;
@@ -37,7 +36,7 @@
   }
 
   async function login() {
-    signInWithPopup(auth, provider).then((cre) => {
+    await signInWithPopup(auth, provider).then((cre) => {
       console.log(cre.user);
     });
   }
@@ -45,6 +44,19 @@
   async function logout() {
     await signOut(auth);
   }
+
+  onMount(() => {
+    const websocket = new WebSocket('wss://stock.elecball.workers.dev');
+    websocket.addEventListener('message', event => {
+      console.log('Message received from server');
+      console.log(event.data);
+    });
+
+    websocket.onopen = () => {
+      websocket.send('MESSAGE');
+    }
+
+  });
 </script>
 
 <main>
