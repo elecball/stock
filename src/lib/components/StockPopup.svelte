@@ -30,18 +30,22 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
   }
   
   .popup-content {
-    background-color: #fff;
+    background: linear-gradient(160deg,var(--primary),var(--accent));
     padding: 20px;
     border-radius: 10px; /* 더 둥근 모양의 테두리 */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
     text-align: center; /* 내용 가운데 정렬 */
+  }
+
+  .popup-content *{
+    color: var(--inverted);
   }
 
   .popup-buttons {
@@ -64,7 +68,8 @@
   }
 
   .close-button {
-    background-color: #ccc;
+    background-color: var(--secondary);
+    color: var(--text);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
