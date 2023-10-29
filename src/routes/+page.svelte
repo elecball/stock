@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { auth, provider } from "$lib/auth";
   import StockPopup from "$lib/components/StockPopup.svelte";
   import type { Stock } from "$lib/interfaces";
+  import { signInWithPopup, signOut } from "firebase/auth";
   import { onDestroy, onMount } from "svelte";
 
   let stockList: Stock[] = [
@@ -30,6 +32,16 @@
   function openPopup(stock: Stock) {
     selectedStock = stock;
     showPopup = true;
+  }
+
+  async function login() {
+    await signInWithPopup(auth, provider).then((cre) => {
+      console.log(cre.user);
+    });
+  }
+
+  async function logout() {
+    await signOut(auth);
   }
 
   onMount(() => {
