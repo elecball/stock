@@ -1,8 +1,12 @@
+import type { Timestamp } from "firebase/firestore";
+
 interface Stock {
   name: string;
   description: string;
-  currentPrice: number;
-  priceList: number[];
+  priceList: {
+    value: number,
+    time: Timestamp
+  }[];
 }
 
 export type { Stock };

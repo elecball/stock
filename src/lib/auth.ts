@@ -1,8 +1,9 @@
-// Import the functions you need from the SDKs you need
 import { browser } from "$app/environment";
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, type User } from "firebase/auth"
+import { collection, doc, getDocs, getFirestore, query } from "firebase/firestore";
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, type User } from "firebase/auth";
 import { readable, writable } from "svelte/store";
+import type { Stock } from "./interfaces";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCI5nGZKWtm5-PONy3-WHAPOmGC3mySG0A",
@@ -16,16 +17,34 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const firestore = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
 
-const user = writable<User | null>(null);
+const user = readable<User | null>(null, set => onAuthStateChanged(auth, (u) => {
+  if(!browser) return; 
+  isLoading.set(false);
+  set(u);
+}));
+
 const isLoading = writable<boolean>(true);
 
-onAuthStateChanged(auth, u => {
-  if (!browser) return;
-  isLoading.set(false);
-  user.set(u);
-});
+function waitLoading(): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    try {
+      isLoading.subscribe(l => {
+        if (!l) resolve(l);
+      });
+    } catch (e) {
+      reject(false);
+    }
+  });
+}
 
-export { app, auth, provider, user, isLoading };
+async function getStocks(): Promise<Stock[]> {
+  const colRef = collection(firestore, "stocks");
+  return (await getDocs(colRef)).docs.map(d => d.data() as Stock);
+}
+
+
+export { app, auth, firestore, provider, user, isLoading, waitLoading, getStocks };

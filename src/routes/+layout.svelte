@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { auth, provider, user, isLoading } from "$lib/auth";
+  import { auth, provider, user, isLoading, waitLoading } from "$lib/auth";
   import { signInWithPopup, signOut } from "firebase/auth";
+  import { onMount } from "svelte";
 
   let balance = 5000;
 
@@ -13,6 +14,11 @@
   async function logout() {
     await signOut(auth);
   }
+
+  onMount(async () => {
+    await waitLoading();
+    console.log($user);
+  })
 </script>
 
 <nav>
