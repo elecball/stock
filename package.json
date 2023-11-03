@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"echarts": "^5.4.3",
 		"firebase": "^10.5.0",
 		"ws": "^8.14.2"
 	}

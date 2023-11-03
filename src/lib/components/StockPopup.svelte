@@ -37,11 +37,20 @@
   }
   
   .popup-content {
-    background: linear-gradient(160deg,var(--primary),var(--accent));
+    background: #FFFFFF10;
     padding: 20px;
-    border-radius: 10px; /* 더 둥근 모양의 테두리 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-    text-align: center; /* 내용 가운데 정렬 */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    backdrop-filter: blur(10px);
+
+    & > h2 {
+      color: var(--text);
+    }
+
+    & > p {
+      color: var(--text);
+    }
   }
 
   .popup-content *{

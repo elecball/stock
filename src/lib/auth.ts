@@ -43,7 +43,11 @@ function waitLoading(): Promise<boolean> {
 
 async function getStocks(): Promise<Stock[]> {
   const colRef = collection(firestore, "stocks");
-  return (await getDocs(colRef)).docs.map(d => d.data() as Stock);
+  return (await getDocs(colRef)).docs.map(d => {
+    const stock = d.data() as Stock;
+    stock.id = d.id;
+    return stock;
+  });
 }
 
 
