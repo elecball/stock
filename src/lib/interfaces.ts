@@ -12,4 +12,12 @@ interface Price {
   time: Timestamp
 }
 
-export type { Stock, Price };
+interface UserData {
+  balance: number,
+  stocks: {
+    amount: number,
+    id: string
+  }[]
+}
+
+export type { Stock, Price, UserData };

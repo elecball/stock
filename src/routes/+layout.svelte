@@ -1,12 +1,34 @@
 <script lang="ts">
-  import { auth, provider, user, isLoading, waitLoading } from "$lib/auth";
+  import { auth, provider, user, isLoading, waitLoading, firestore, userData } from "$lib/auth";
+  import type { UserData } from "$lib/interfaces";
   import { signInWithPopup, signOut } from "firebase/auth";
+  import { collection, doc, getDoc, setDoc } from "firebase/firestore";
   import { onMount } from "svelte";
 
-  let balance = 5000;
-
   async function login() {
-    signInWithPopup(auth, provider).then((cre) => {
+    signInWithPopup(auth, provider).then(async (cre) => {
+      const user = cre.user;
+      const docSnap = await getDoc(doc(firestore, "users", cre.user.uid));
+
+      console.log(user.uid);
+
+      if (!docSnap.exists()) {
+        await fetch('http://localhost:8081/api/user/create', {
+          // mode: 'no-cors',
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            uid: user.uid
+          })
+        }).then(async res => console.log(await res.json(), 'z'))
+          .catch(async e => console.log(e, 'a'));
+        // balance = 10000;
+      }
+      else {
+        // balance = docSnap.get("balance");
+      }
       console.log(cre.user);
     });
   }
@@ -17,6 +39,19 @@
 
   onMount(async () => {
     await waitLoading();
+    // if ($user) {
+    //   const docSnap = await getDoc(doc(firestore, "users", $user?.uid));
+    //   balance = docSnap.get("balance");
+    // }
+
+    if ($user) {
+      const docSnap = await getDoc(doc(firestore, "users", $user.uid));
+      userData.set(docSnap.data() as UserData | null);
+    }
+    else {
+      userData.set(null);
+    }
+      
     console.log($user);
   })
 </script>
@@ -33,7 +68,7 @@
         <img src="{$user?.photoURL}" alt="profile" on:click={logout}>
         <div class="info">
           <span>{$user?.displayName}</span>
-          <span>${balance.toFixed(2)}</span>
+          <span>${$userData?.balance.toFixed(2)}</span>
         </div>
       {:else}
         <button on:click={login}>로그인</button>
@@ -43,6 +78,8 @@
     </div>
   </div>
 </nav>
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 <slot />
 
