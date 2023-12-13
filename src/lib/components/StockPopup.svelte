@@ -127,7 +127,7 @@
 
   async function transaction(type: 'buy' | 'sell') {
     // console.log(type);
-    await fetch('http://localhost:8081/api/stock', {
+    await fetch('http://mc-stock.kro.kr:8081/api/stock', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"

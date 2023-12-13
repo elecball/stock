@@ -20,4 +20,18 @@ interface UserData {
   }[]
 }
 
-export type { Stock, Price, UserData };
+interface Block { 
+  index: number, 
+  previousHash: string, 
+  timestamp: Timestamp, 
+  data: {
+    type: 'buy' | 'sell',
+    user: string,
+    objectId: string,
+    amount: number,
+    price: number
+  } | string, 
+  hash: string 
+}
+
+export type { Stock, Price, UserData, Block };

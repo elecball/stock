@@ -57,7 +57,7 @@
       });
     }, 0);
 
-    const websocket = new WebSocket('ws://mc-stock.kro.kr:800');
+    const websocket = new WebSocket('ws://mc-stock.kro.kr:8080');
     websocket.addEventListener('message', event => {
       const msg = (event.data as string).split("/");
       // console.log(msg);
@@ -86,12 +86,14 @@
 
   function makeChart(i: number) {
     const pl = stockList[i]?.priceList;
+    console.log(pl);
     if (!pl) return;
 
 
     // console.log(groupPrices(pl));
     const gpl = groupPrices(pl, spanGroup[selectedSpan[i]])
       .filter(p => new Date().getTime() - p.time.getTime() <= 60000 * spans[selectedSpan[i]]);
+    // console.log(gpl);
     // pl.map(p => {
     //   const key = new Date(p.time.toDate().getTime() - (p.time.toDate().getTime() % 300000));
     //   return key.toISOString();
@@ -151,8 +153,8 @@
         color: '#00000000',
         showSymbol: false,
         data: [
-          [new Date().toISOString(), gpl[gpl.length - 1].value],
-          [new Date(new Date().getTime() - 60000 * spans[selectedSpan[i]]).toISOString(), gpl[gpl.length - 1].value]],
+          [new Date().toISOString(), gpl[gpl.length - 1]?.value],
+          [new Date(new Date().getTime() - 60000 * spans[selectedSpan[i]]).toISOString(), gpl[gpl.length - 1]?.value]],
         tooltip: {
           trigger: 'none',
         }

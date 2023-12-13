@@ -13,7 +13,7 @@
       console.log(user.uid);
 
       if (!docSnap.exists()) {
-        await fetch('http://localhost:8081/api/user/create', {
+        await fetch('http://mc-stock.kro.kr:8081/api/user/create', {
           // mode: 'no-cors',
           method: 'POST',
           headers: {
