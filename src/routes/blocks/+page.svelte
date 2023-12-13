@@ -24,7 +24,7 @@
 
     datasStore.set(datas);
 
-    const websocket = new WebSocket('ws://mc-stock.kro.kr:8082');
+    const websocket = new WebSocket('wss://mc-stock.kro.kr:8082');
     websocket.addEventListener('message', event => {
       const msg = (event.data as string);
       const parsedMsg = JSON.parse(msg);
