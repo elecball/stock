@@ -57,7 +57,7 @@
       });
     }, 0);
 
-    const websocket = new WebSocket('wss://mc-stock.kro.kr:8080');
+    const websocket = new WebSocket('ws://mc-stock.kro.kr:8080');
     websocket.addEventListener('message', event => {
       const msg = (event.data as string).split("/");
       // console.log(msg);
